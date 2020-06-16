@@ -21,7 +21,7 @@ include '../template/headerAdmin.php';
                 </button>
               </div>
               <div class="modal-body">
-                <form action="tambah_mapping.php?act=tambahMapping" method="POST" enctype="multipart/form-data">
+                <form action="proses_mapping.php?act=tambahMapping" method="POST" enctype="multipart/form-data">
                   <div class="form-group">
                     <label class="col-form-label">NIK:</label>
                     <input type="text" class="form-control" id="nik" name="nik" required >
@@ -99,10 +99,10 @@ include '../template/headerAdmin.php';
 
                   <div class="form-group">
                     <label class="col-form-label">Lokasi:</label>
-                     <select class="form-control"id="lokasi" required >
+                     <select class="form-control"id="lokasi" name="lokasi" required >
                         <option value='' selected>- Pilih -</option>
-                        <option value="inner">Inner</option>
-                        <option value="inner">Outher</option>
+                        <option value="Inner">Inner</option>
+                        <option value="Outer">Outher</option>
                     </select>
                   </div>
 
@@ -185,9 +185,10 @@ include '../template/headerAdmin.php';
     <div class="card-header"><i class="fas fa-table mr-1"></i>Data Tabel</div>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
+            <table class="table table-bordered " id="dataTable" width="100%" cellspacing="0" style="font-size:12px">
+                <thead >
                    <tr>
+                      <th>No</th>
                      <th>Nik</th>
                         <th>Nama</th>
                         <th>Position Name</th>
@@ -195,6 +196,7 @@ include '../template/headerAdmin.php';
                         <th>Witel</th>
                         <th>Teritory</th>
                         <th>Regional</th>
+                        <th>Lokasi</th>
                         <th>Loker</th>
                         <th>STO</th>
                         <th>Level</th>
@@ -205,7 +207,7 @@ include '../template/headerAdmin.php';
                         <th>Sub Group</th>
                         <th>Group Fungsi</th>
                         <th>Cost Center</th>
-                        <th>opsi</th>
+                        <th>Opsi</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -215,6 +217,7 @@ include '../template/headerAdmin.php';
                     $data = $koneksi->query($sql);
                     while($d =$data->fetch_assoc()){ ?>
                     <tr>
+                        <td><?php echo $no++;?></td>
                         <td><?php echo $d['nik']; ?></td>
                         <td><?php echo $d['nama']; ?></td>
                         <td><?php echo $d['position_name']; ?></td>
@@ -222,6 +225,7 @@ include '../template/headerAdmin.php';
                         <td><?php echo $d['witel']; ?></td>
                         <td><?php echo $d['teritory']; ?></td>
                         <td><?php echo $d['regional']; ?></td>
+                        <td><?php echo $d['lokasi']; ?></td>
                         <td><?php echo $d['loker']; ?></td>
                         <td><?php echo $d['sto']; ?></td>
                         <td><?php echo $d['level']; ?></td>
@@ -233,7 +237,35 @@ include '../template/headerAdmin.php';
                         <td><?php echo $d['group_fungsi']; ?></td>
                         <td><?php echo $d['cost_center']; ?></td>
                         <td>
-                      <a href="#" class="btn btn-danger btn-flat btn-xs" data-toggle="modal" data-target="#deleteuser<?php echo $no; ?>"><i class="fa fa-trash"></i> Delete</a>  
+
+                      <a href="#" class="btn btn-primary btn-flat btn-sm" data-toggle="modal" data-target="#updateuser<?php echo $no; ?>"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                      <a href="#" class="btn btn-danger btn-flat btn-sm" data-toggle="modal" data-target="#deleteMapping<?php echo $no; ?>"><i class="fa fa-trash"></i> Delete</a>
+
+                      <!-- modal delete -->
+                       <div class="example-modal">
+                        <div id="deleteMapping<?php echo $no; ?>" class="modal fade" role="dialog" style="display :none;">
+                          <div class="modal-dialog">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title">Konfirmasi Delete Data</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <h6 align="center" >Apakah anda yakin ingin menghapus data <?php echo $d['nama'];?><strong><span class="grt"></span></strong> ?</h6>
+                              </div>
+                              <div class="modal-footer">
+                                <button id="nodelete" type="button" class="btn btn-danger pull-left" data-dismiss="modal">Cancle</button>
+                                <a href="proses_mapping.php?act=deleteMapping&id=<?php echo $d['id']; ?>" class="btn btn-primary">Delete</a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- end modal delete -->
+
+
                     </td>
                     
                     <?php } ?>
